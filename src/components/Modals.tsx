@@ -19,28 +19,8 @@ type RegStep = "select" | "instructions";
 // going to production.
 const SJCET_FIRST_YEAR_INSTRUCTIONS = [
   {
-    heading: "Eligibility",
-    body: "This track is open to 1st-year B.Tech students currently enrolled at SJCET Palai.",
-  },
-  {
-    heading: "Registration Fee",
-    body: "[TODO: Confirm the registration fee for SJCET 1st-year participants.]",
-  },
-  {
-    heading: "Accommodation",
-    body: "[TODO: Confirm accommodation details and arrangements for SJCET 1st-year participants.]",
-  },
-  {
-    heading: "Event Rules",
-    body: "[TODO: List the applicable event rules, code of conduct, and any discipline-specific eligibility restrictions.]",
-  },
-  {
-    heading: "Deadlines",
-    body: "[TODO: Confirm the registration deadline and any payment deadlines.]",
-  },
-  {
-    heading: "Contact",
-    body: "For queries, contact the IEEE ComSoc SBC SJCET organising committee via the official communication channels.",
+    heading: "Guidelines for first year SJCETstudents",
+    body: "First-year students of SJCET must obtain permission from their respective HODs to attend SYNORA, as 30 and 31 October are working days.Students must ensure that they meet the required attendance percentage to be eligible to attend the event. Obtaining permission from the HOD is the student's own responsibility.Please note: If you register for the event but your HOD does not permit you to attend, the registration fee will not be refunded.",
   },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
