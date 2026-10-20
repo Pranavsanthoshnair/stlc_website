@@ -9,9 +9,9 @@ interface ModalsProps {
   onCloseExpo: () => void;
 }
 
-// Replace this with the event-specific SnapTicks registration URL before launch.
-// Keep it in one place so every eligibility path uses the same destination.
-const SNAPTICKS_REGISTRATION_URL = "https://snapticks.com";
+// Configure the exact event-specific SnapTicks URL in
+// NEXT_PUBLIC_SNAPTICKS_REGISTRATION_URL before deploying.
+const SNAPTICKS_REGISTRATION_URL = process.env.NEXT_PUBLIC_SNAPTICKS_REGISTRATION_URL;
 
 // The instructions are shown only to first-year students from SJCET.
 // Confirm these event-specific rules with the organisers before publishing.
@@ -43,6 +43,7 @@ export default function Modals({
   const [college, setCollege] = useState<"sjcet" | "non-sjcet" | "">("");
   const [year, setYear] = useState<"1st" | "2nd" | "3rd" | "4th" | "">("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [registrationError, setRegistrationError] = useState("");
   const [expoSubmitted, setExpoSubmitted] = useState(false);
   const [expoForm, setExpoForm] = useState({
     teamLead: "",
@@ -56,23 +57,47 @@ export default function Modals({
     setCollege("");
     setYear("");
     setAcceptedTerms(false);
+    setRegistrationError("");
     onCloseRegister();
+  };
+
+  const redirectToSnapTicks = () => {
+    if (!SNAPTICKS_REGISTRATION_URL) {
+      setRegistrationError(
+        "Registration is not configured yet. Please contact the SYNORA organisers for the SnapTicks link."
+      );
+      return;
+    }
+
+    try {
+      const destination = new URL(SNAPTICKS_REGISTRATION_URL);
+      if (destination.protocol !== "https:" && destination.protocol !== "http:") {
+        throw new Error("Unsupported URL protocol");
+      }
+      window.location.assign(destination.toString());
+    } catch {
+      setRegistrationError(
+        "The SnapTicks registration link appears to be invalid. Please contact the SYNORA organisers."
+      );
+    }
   };
 
   const continueRegistration = () => {
     if (!college || !year) return;
+    setRegistrationError("");
 
     if (college === "sjcet" && year === "1st") {
       setRegistrationStep("instructions");
       return;
     }
 
-    window.location.assign(SNAPTICKS_REGISTRATION_URL);
+    redirectToSnapTicks();
   };
 
   const acceptAndRegister = () => {
     if (!acceptedTerms) return;
-    window.location.assign(SNAPTICKS_REGISTRATION_URL);
+    setRegistrationError("");
+    redirectToSnapTicks();
   };
 
   const handleExpoSubmit = (e: React.FormEvent) => {
@@ -183,6 +208,11 @@ export default function Modals({
                   <p className="text-xs text-[#A88C78]">SJCET Palai, Kottayam, Kerala</p>
                 </div>
 
+                {registrationError && (
+                  <p role="alert" className="mt-3 text-xs leading-relaxed text-[#FFA366]">
+                    {registrationError}
+                  </p>
+                )}
                 <button
                   type="button"
                   disabled={!college || !year}
@@ -230,6 +260,11 @@ export default function Modals({
                   </span>
                 </label>
 
+                {registrationError && (
+                  <p role="alert" className="mt-3 text-xs leading-relaxed text-[#FFA366]">
+                    {registrationError}
+                  </p>
+                )}
                 <button
                   type="button"
                   disabled={!acceptedTerms}
